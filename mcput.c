@@ -1,7 +1,7 @@
 /*
- * echoclient.c - An echo client
+ * mcput.c - A put program for the cloud
  */
-/* $begin echoclientmain */
+/* $begin my cloud put */
 #include "csapp.h"
 
 int main(int argc, char **argv) 
@@ -11,6 +11,7 @@ int main(int argc, char **argv)
     rio_t rio;
     int key;
     char filename;
+    int i = 0;
 
     if (argc != 5) {
 	fprintf(stderr, "usage: %s <host> <port> <key> <filename>\n", argv[0]);
@@ -22,10 +23,15 @@ int main(int argc, char **argv)
     clientfd = Open_clientfd(host, port);
     Rio_readinitb(&rio, clientfd);
 
-    while (Fgets(buf, MAXLINE, stdin) != NULL) {
-	Rio_writen(clientfd, buf, strlen(buf));
+
+    for(i=0; i < 4; i++){
+	strcat(buf,argv[i]);
+	strcat(buf,' ');
     }
+
+    Rio_writen(clientfd, buf, strlen(buf));
+    
     Close(clientfd); //line:netp:echoclient:close
     exit(0);
 }
-/* $end echoclientmain */
+/* $end my cloud put */
