@@ -1,0 +1,13 @@
+OBJECTS = csapp.o echo.o echoserveri.o 
+HEADERS = csapp.h 
+CFLAGS = -g
+LIBS = -lpthread
+
+all: $(OBJECTS) 
+	gcc $^ $(CFLAGS) $(LIBS) -o server
+
+%.o: %.c $(HEADERS)
+	gcc -c $(CFLAGS) $< -o $@
+
+clean:
+	rm -f $(OBJECTS)
