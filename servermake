@@ -1,4 +1,4 @@
-OBJECTS = csapp.o echo.o echoserveri.o 
+OBJECTS = csapp.o echoserveri.o 
 HEADERS = csapp.h 
 CFLAGS = -g
 LIBS = -lpthread
