@@ -15,4 +15,5 @@ ourclient: include/csapp.o client/client.o
 	${CC} $^ -lpthread -Icommon -o $@
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f client/client.o
+	rm -f server/server.o
