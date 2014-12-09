@@ -3,15 +3,15 @@ CFLAGS=-I.
 OBJECTS = server.o client.o csapp.o
 HEADERS = csapp.h options.h
 
-all: server client
+all: ourserver ourclient
 
 %.o: %.c $(HEADERS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-server: csapp.o server.o
+ourserver: include/csapp.o server/server.o
 	${CC} $^ -lpthread -Icommon -o $@
 
-client: csapp.o client.o
+ourclient: include/csapp.o client/client.o
 	${CC} $^ -lpthread -Icommon -o $@
 
 clean:

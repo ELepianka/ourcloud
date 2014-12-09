@@ -2,8 +2,8 @@
  * echoclient.c - An echo client
  */
 /* $begin echoclientmain */
-#include "csapp.h"
-#include "options.h"
+#include "../include/csapp.h"
+#include "../include/options.h"
 
 int main(int argc, char **argv) {
 

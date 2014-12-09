@@ -2,8 +2,8 @@
  * echoserveri.c - An iterative echo server 
  */ 
 /* $begin echoserverimain */
-#include "csapp.h"
-#include "options.h"
+#include "../include/csapp.h"
+#include "../include/options.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
