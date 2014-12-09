@@ -7,7 +7,6 @@
 int main(int argc, char **argv) {
 
     int clientfd, port, size;
-    //char* port;
     char *host;
     char buf[100*1024];
     char command_type;
@@ -25,21 +24,16 @@ int main(int argc, char **argv) {
 					  //and establishes conenction
     Rio_readinitb(&rio, clientfd);	  //initializes rio
 
-    if(command_type == 'put'){
-	size = fread(buf,sizeof(char),100*1024,stdin);
+//    if(command_type == 'put'){
+{	size = fread(buf,sizeof(char),100*1024,stdin);
 	buf[size] = 0;
 	size += 1;
     }
 
-    Rio_writen(clientfd, buf, size);
-    Rio_readn(clientfd, buf, size);
+      Rio_writen(clientfd, buf, size);
+      Rio_readn(clientfd, buf, size);
 
 
-//    while (Fgets(buf, MAXLINE, stdin) != NULL) {
-//	Rio_writen(clientfd, buf, strlen(buf));
-//	Rio_readlineb(&rio, buf, MAXLINE);
-//	Fputs(buf, stdout);
-//    }
     Close(clientfd); //line:netp:echoclient:close
     exit(0);
 }
