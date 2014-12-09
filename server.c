@@ -12,7 +12,7 @@ void echo(int connfd);
 
 int main(int argc, char **argv) 
 {
-    int listenfd, connfd, port, secret_key;
+    int listenfd, connfd, port, secret_key, client_key;
     
     socklen_t clientlen;
     struct sockaddr_in clientaddr;
@@ -40,12 +40,13 @@ int main(int argc, char **argv)
 
 
 
-	char buf[1024*100];
-	int size;
-size = sizeof(char),100*1024;
+//	char buf[1024*100];
+char* buf;
+	size_t size;
+	size = sizeof(char)*(100*1024);
 	rio_t rio;
 	Rio_readinitb(&rio, connfd);
-//	Rio_readn(&rio, buf, 100*1024);
+	Rio_readnb(&rio, buf, size);
 
 	char **tokens;
 //	tokens = str_split(buf, ' ');
@@ -53,7 +54,7 @@ size = sizeof(char),100*1024;
 //	if(strcmp("mcput", tokens[0]) == 0)
 	{
 	  printf("Request Type = put\n");
-	  Rio_writen(&rio, buf, size);
+	  //Rio_writen(&rio, buf, size);
 	  //do put stuff
 	}
 	if("mcget", tokens[0])

@@ -1,4 +1,4 @@
-OBJECTS = csapp.o serveri.o 
+OBJECTS = csapp.o server.o 
 HEADERS = csapp.h 
 CFLAGS = -g
 LIBS = -lpthread
