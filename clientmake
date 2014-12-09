@@ -1,4 +1,4 @@
-OBJECTS = csapp.o  echoclient.o
+OBJECTS = csapp.o client.o
 HEADERS = csapp.h 
 CFLAGS = -g
 LIBS = -lpthread

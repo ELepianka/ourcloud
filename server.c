@@ -1,5 +1,3 @@
-
-
 /* 
  * echoserveri.c - An iterative echo server 
  */ 
@@ -39,20 +37,26 @@ int main(int argc, char **argv)
 	printf("server connected to %s (%s)\n", hp->h_name, haddrp);
 
 
-//	char buf[1024*100];
-//	rio_t rio;
-//	Rio_readinitb(&rio, connfd);
-//	Rio_readn(&rio, buf, 100*1024);
-/*
-	char **tokens;
-	tokens = str_split(buf, ' ');
 
-	if(strcmp("mcput", tokens[0]) == 0)
+
+
+	char buf[1024*100];
+	int size;
+size = sizeof(char),100*1024;
+	rio_t rio;
+	Rio_readinitb(&rio, connfd);
+//	Rio_readn(&rio, buf, 100*1024);
+
+	char **tokens;
+//	tokens = str_split(buf, ' ');
+
+//	if(strcmp("mcput", tokens[0]) == 0)
 	{
 	  printf("Request Type = put\n");
+	  Rio_writen(&rio, buf, size);
 	  //do put stuff
 	}
-	else if("mcget", tokens[0])
+	if("mcget", tokens[0])
 	{
 	  printf("Request Type = get\n");
 	  //do get stuff
@@ -68,7 +72,7 @@ int main(int argc, char **argv)
 	  printf("Request Type = list\n");
 	}
 	//echo(connfd);
-*/
+
 	Close(connfd);
     }
     exit(0);
