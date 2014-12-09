@@ -3,6 +3,7 @@
  */ 
 /* $begin echoserverimain */
 #include "csapp.h"
+#include "options.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -57,7 +58,7 @@ char* buf;
 	  //Rio_writen(&rio, buf, size);
 	  //do put stuff
 	}
-	if("mcget", tokens[0])
+/*	if("mcget", tokens[0])
 	{
 	  printf("Request Type = get\n");
 	  //do get stuff
@@ -73,7 +74,7 @@ char* buf;
 	  printf("Request Type = list\n");
 	}
 	//echo(connfd);
-
+*/
 	Close(connfd);
     }
     exit(0);

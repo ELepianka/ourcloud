@@ -3,6 +3,7 @@
  */
 /* $begin echoclientmain */
 #include "csapp.h"
+#include "options.h"
 
 int main(int argc, char **argv) {
 
@@ -18,14 +19,14 @@ int main(int argc, char **argv) {
     }
     host = argv[2];
     port = atoi(argv[3]);
-    command_type = argv[1];
+    command_type = atoi(argv[1]);
 
     clientfd = Open_clientfd(host, port); //creates a socket, creates an address, 
 					  //and establishes conenction
     Rio_readinitb(&rio, clientfd);	  //initializes rio
 
-//    if(command_type == 'put'){
-{	size = fread(buf,sizeof(char),100*1024,stdin);
+    if(command_type == PUT){
+	size = fread(buf,sizeof(char),100*1024,stdin);
 	buf[size] = 0;
 	size += 1;
     }
