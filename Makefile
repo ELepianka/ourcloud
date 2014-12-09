@@ -17,3 +17,4 @@ ourclient: include/csapp.o client/client.o
 clean:
 	rm -f client/client.o
 	rm -f server/server.o
+	rm -f include/csapp.o
