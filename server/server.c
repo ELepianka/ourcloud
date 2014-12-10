@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 
 
 //	char buf[1024*100];
-char* buf;
+	char* buf;
 	size_t size;
 	size = sizeof(char)*(100*1024);
 	rio_t rio;

@@ -22,14 +22,14 @@ int main(int argc, char **argv) {
 					  //and establishes conenction
     Rio_readinitb(&rio, clientfd);	  //initializes rio
 	
-    size = sizeof(char)*CONTENT_MAX;
-    buf[size] = 0;
-    size += 1;
 
     printf("%d\n", command_type);
 
     if(command_type == PUT){
 	printf("CLIENT: PUT\n");
+	size = fread(buf, sizeof(char),CONTENT_MAX,stdin); //fread to get size, 
+	buf[size] = 0;
+	size += 1;
     }
     else if(command_type == GET){
       printf("CLIENT: GET\n");
