@@ -13,9 +13,14 @@
 #define DEL_REQ_HEADER 88
 #define LIST_REQ_HEADER 8
 
+#define GET_RESP_HEADER 8
+#define PUT_RESP_HEADER 4
+#define DEL_RESP_HEADER 4
+#define LIST_RES_HEADER 8
+
 #define PUT 1
 #define GET 2
-#define DELETE 3
+#define DEL 3
 #define LIST 4
 
 #endif

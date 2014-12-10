@@ -1,4 +1,4 @@
-//mcput sends a request to put a file onto the cloud server
+//mcdel sends request to delete a file on the cloud server
 
 #include <stdio.h>
 #include "../include/csapp.h"
@@ -6,20 +6,19 @@
 
 int main(int argc, char** argv)
 {
-  printf("Input file is read from stdin\n");
   int port, clientfd;
   char data[CONTENT_MAX];
-  unsigned int size = fread(data, sizeof(char), CONTENT_MAX, stdin);
-  int type = PUT;
+  //unsigned int size = fread(data, sizeof(char), CONTENT_MAX, stdin);
+  int type = DEL;
   char host[HOST_LENGTH];
   unsigned int secret_key;
   char filename[FILENAME_MAX];
-  char *buf = malloc(PUT_REQ_HEADER+CONTENT_MAX);
-  memset(buf, 0, PUT_REQ_HEADER+CONTENT_MAX);
+  char *buf = malloc(DEL_REQ_HEADER);
+  memset(buf, 0, DEL_REQ_HEADER);
 
   if(argc != 5)
   {
-    printf("usage: ./mcput <MachineName> <port> <key> <filename>\n");
+    printf("usage: ./mcdel <MachineName> <port> <key> <filename>\n");
     return 0;
   }
   
@@ -37,12 +36,10 @@ int main(int argc, char** argv)
   memcpy(buf, &secret_key, 4);
   memcpy(buf+4, &type, 4);
   memcpy(buf+4+4, filename, FILENAME_MAX); 
-  memcpy(buf+4+4+FILENAME_MAX, &size, 4);
-  memcpy(buf+4+4+FILENAME_MAX+4, &data, size);
   
   //Rio_readinitb(&rio, clientfd);
-  Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);
-  Rio_readnb(clientfd, data, PUT_RESP_HEADER);
+  Rio_writen(clientfd, buf, DEL_REQ_HEADER);
+  Rio_readnb(clientfd, data, DEL_RESP_HEADER);
 
   int status = -1; //-1 is an error, 0 is success
   memcpy(data, status, 4);

@@ -1,4 +1,4 @@
-//mcput sends a request to put a file onto the cloud server
+//mcget sends request for a file on the cloud server
 
 #include <stdio.h>
 #include "../include/csapp.h"
@@ -6,20 +6,19 @@
 
 int main(int argc, char** argv)
 {
-  printf("Input file is read from stdin\n");
   int port, clientfd;
-  char data[CONTENT_MAX];
-  unsigned int size = fread(data, sizeof(char), CONTENT_MAX, stdin);
-  int type = PUT;
+  char response[CONTENT_MAX];
+  //unsigned int size = fread(data, sizeof(char), CONTENT_MAX, stdin);
+  int type = GET;
   char host[HOST_LENGTH];
   unsigned int secret_key;
   char filename[FILENAME_MAX];
-  char *buf = malloc(PUT_REQ_HEADER+CONTENT_MAX);
-  memset(buf, 0, PUT_REQ_HEADER+CONTENT_MAX);
+  char *buf = malloc(GET_REQ_HEADER);
+  memset(buf, 0, GET_REQ_HEADER);
 
   if(argc != 5)
   {
-    printf("usage: ./mcput <MachineName> <port> <key> <filename>\n");
+    printf("usage: ./mcget <MachineName> <port> <key> <filename>\n");
     return 0;
   }
   
@@ -37,20 +36,30 @@ int main(int argc, char** argv)
   memcpy(buf, &secret_key, 4);
   memcpy(buf+4, &type, 4);
   memcpy(buf+4+4, filename, FILENAME_MAX); 
-  memcpy(buf+4+4+FILENAME_MAX, &size, 4);
-  memcpy(buf+4+4+FILENAME_MAX+4, &data, size);
   
-  //Rio_readinitb(&rio, clientfd);
-  Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);
-  Rio_readnb(clientfd, data, PUT_RESP_HEADER);
+//  Rio_readinitb(&rio, clientfd);
+  Rio_writen(clientfd, buf, GET_REQ_HEADER);
+  Rio_readnb(clientfd, response, GET_RESP_HEADER);
 
   int status = -1; //-1 is an error, 0 is success
-  memcpy(data, status, 4);
+  memcpy(response, status, 4);
   status = ntohl(status);
 
   if(status == -1)
   {
     printf("Error storing file\n")
+  }
+
+  memcpy(response+4, size, 4);
+  size = ntohl(size);
+  if(size > CONTENT_MAX)
+  {
+    printf("Response too large\n");;
+  }
+  else
+  {
+    char *data = malloc(size);
+    fwrite(data, sizeof(char), size, stdout);
   }
 
   Close(clientfd);
