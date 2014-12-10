@@ -8,7 +8,6 @@ int main(int argc, char** argv)
 {
   int port, clientfd;
   char response[CONTENT_MAX];
-  //unsigned int size = fread(data, sizeof(char), CONTENT_MAX, stdin);
   int type = GET;
   char host[HOST_LENGTH];
   unsigned int secret_key;
@@ -42,12 +41,13 @@ int main(int argc, char** argv)
   Rio_readnb(clientfd, response, GET_RESP_HEADER);
 
   int status = -1; //-1 is an error, 0 is success
+  int size = 0;
   memcpy(response, status, 4);
   status = ntohl(status);
 
   if(status == -1)
   {
-    printf("Error storing file\n")
+    printf("Error storing file\n");
   }
 
   memcpy(response+4, size, 4);

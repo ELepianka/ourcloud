@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 
   if(status == -1)
   {
-    printf("Error storing file\n")
+    printf("Error storing file\n");
   }
 
   Close(clientfd);

@@ -16,7 +16,7 @@
 #define GET_RESP_HEADER 8
 #define PUT_RESP_HEADER 4
 #define DEL_RESP_HEADER 4
-#define LIST_RES_HEADER 8
+#define LIST_RESP_HEADER 8
 
 #define PUT 1
 #define GET 2
