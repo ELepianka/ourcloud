@@ -8,9 +8,9 @@
 #define FNAME_MAX 80
 #define CONTENT_MAX 100*1024
 
-#define GET 0
 #define PUT 1
-#define DELETE 2
-#define LIST 3
+#define GET 2
+#define DELETE 3
+#define LIST 4
 
 #endif
