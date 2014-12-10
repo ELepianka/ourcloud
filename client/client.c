@@ -1,16 +1,13 @@
-/*
- * echoclient.c - An echo client
- */
-/* $begin echoclientmain */
 #include "../include/csapp.h"
 #include "../include/options.h"
 
 int main(int argc, char **argv) {
 
-    int clientfd, port, size;
+    int clientfd, port;
+    int size = 0;
     char *host;
-    char buf[100*1024];
-    char command_type;
+    char buf[CONTENT_MAX];
+    int command_type;
     rio_t rio;
 
     if (argc < 5) {
@@ -24,11 +21,24 @@ int main(int argc, char **argv) {
     clientfd = Open_clientfd(host, port); //creates a socket, creates an address, 
 					  //and establishes conenction
     Rio_readinitb(&rio, clientfd);	  //initializes rio
+	
+    size = sizeof(char)*CONTENT_MAX;
+    buf[size] = 0;
+    size += 1;
+
+    printf("%d\n", command_type);
 
     if(command_type == PUT){
-	size = fread(buf,sizeof(char),100*1024,stdin);
-	buf[size] = 0;
-	size += 1;
+	printf("CLIENT: PUT\n");
+    }
+    else if(command_type == GET){
+      printf("CLIENT: GET\n");
+    }
+    else if(command_type == DELETE){
+	printf("CLIENT: DELETE\n");
+    }
+    else if(command_type == LIST){
+	printf("CLIENT: LIST\n");
     }
 
       Rio_writen(clientfd, buf, size);
