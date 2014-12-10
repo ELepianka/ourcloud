@@ -35,13 +35,14 @@ int main(int argc, char **argv) {
         size_t size;
     	size = sizeof(char)*(CONTENT_MAX);
     	rio_t rio;
-//    	Rio_readinitb(&rio, connfd);
+        printf("we're at the readinitb\n");
+    	Rio_readinitb(&rio, connfd);
         char* tmp;
         int user_key = 0;
         int tmpint = 0;       
  
-        printf("did not read anything!");
-        read(&rio, tmp, 4);
+        printf("did not read anything!\n");
+        Rio_readnb(&rio, tmp, 4);
         user_key = atoi(tmp);
         printf("read something!\n%d\n",user_key);
         if (user_key != secret_key){
