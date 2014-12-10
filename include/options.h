@@ -7,6 +7,11 @@
 
 #define FNAME_MAX 80
 #define CONTENT_MAX 100*1024
+#define HOST_LENGTH 40
+#define PUT_REQ_HEADER 92
+#define GET_REQ_HEADER 88
+#define DEL_REQ_HEADER 88
+#define LIST_REQ_HEADER 8
 
 #define PUT 1
 #define GET 2
