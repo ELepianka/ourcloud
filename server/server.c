@@ -24,11 +24,9 @@ int main(int argc, char **argv) {
     unsigned int secret_key;
     socklen_t clientlen;
     struct sockaddr_in clientaddr;
-//    struct hostent *hp;
-//    char *haddrp;
     if (argc < 3) {
-    fprintf(stderr, "usage: %s <port> <secret>\n", argv[0]);
-    exit(0);
+        fprintf(stderr, "usage: %s <port> <secret>\n", argv[0]);
+        exit(0);
     }    
     port = atoi(argv[1]);
     secret_key = atoi(argv[2]);
@@ -37,7 +35,6 @@ int main(int argc, char **argv) {
     while (1) {
     	clientlen = sizeof(clientaddr);
     	connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen);
-
         connection(clientlen,clientaddr);
 
     	rio_t rio;
@@ -45,9 +42,7 @@ int main(int argc, char **argv) {
         char* tmp = malloc(PUT_REQ_HEADER+CONTENT_MAX);
         memset(tmp,0,PUT_REQ_HEADER+CONTENT_MAX);
         int user_key = 0;
-
         rio_readnb(&rio, tmp, PUT_REQ_HEADER+CONTENT_MAX);
-
     	memcpy(&user_key, tmp, 4);
         user_key = ntohl(user_key);
         if (user_key != secret_key){
@@ -57,15 +52,18 @@ int main(int argc, char **argv) {
         else {
             printf("Secret Key = %d\n",user_key);
         }
+
 	    unsigned int request_type = 5;
         memcpy(&request_type, tmp+4, 4);
 	    request_type = ntohl(request_type);
-    
         if(request_type == 5){
 	        printf("Poorly formatted request\n");
     	}
+
         int resp = 0;
         char filename[FNAME_MAX];
+        char buf[CONTENT_MAX];
+        int size = 4;
         switch(request_type){
             case 0:
                 printf("Request Type = get\n");
@@ -74,6 +72,14 @@ int main(int argc, char **argv) {
                 printf("Request Type = put\n");
                 memcpy(filename, tmp+4+4, 80);
                 printf("Filename = %s\n",filename);
+//                memcpy(size,tmp+4+4+80,4);            
+//                printf("Size of content: %d\n",size);
+//                memcpy(buf,tmp+4+4+80+4,size);
+//                
+//                FILE *fp;
+//                fp = fopen(filename,"w");
+//                fwrite(buf,sizeof(char),CONTENT_MAX,fp);
+//                fclose(fp);
                 Rio_writen(connfd,&resp,4);
                 break;
             case 2:
