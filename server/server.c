@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     	memcpy(&user_key, tmp, 4);
         user_key = ntohl(user_key);
         if (user_key != secret_key){
-	        printf("incorrect key\n");
+	        printf("incorrect key%d\n", user_key);
             return -1;
         }
         else {
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
         int resp = 0;
         char filename[FNAME_MAX];
         char buf[CONTENT_MAX];
-        int size = 4;
+	int size;
         switch(request_type){
             case 0:
                 printf("Request Type = get\n");
@@ -72,7 +72,8 @@ int main(int argc, char **argv) {
                 printf("Request Type = put\n");
                 memcpy(filename, tmp+4+4, 80);
                 printf("Filename = %s\n",filename);
-                memcpy(&size,tmp+4+4+80,4);            
+                memcpy(&size,tmp+88, 4);          
+		size = ntohl(size);
                 printf("Size of content: %d\n",size);
 //                memcpy(buf,tmp+4+4+80+4,size);
 //                

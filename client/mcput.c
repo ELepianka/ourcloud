@@ -7,7 +7,8 @@ int main(int argc, char** argv)
   printf("Input file is read from stdin\n");
   int port, clientfd;
   char data[CONTENT_MAX];
-  unsigned int size = fread(data, sizeof(char), CONTENT_MAX, stdin);
+  int size = (int)(fread(data, sizeof(char), CONTENT_MAX, stdin));
+  printf("size: %d\n", size);
   int type = PUT;
   char host[HOST_LENGTH];
   unsigned int secret_key;
@@ -35,11 +36,13 @@ int main(int argc, char** argv)
   port = htonl(port);
   secret_key = htonl(secret_key);
   type = htonl(type);
+  size = htonl(size);
 
   memcpy(buf, &secret_key, 4);
   memcpy(buf+4, &type, 4);
   memcpy(buf+4+4, &filename, FILENAME_MAX);
-  memcpy(buf+4+4+FILENAME_MAX, &size, 4);
+  memcpy(buf+88, &size, 4);
+  size = ntohl(size);
   memcpy(buf+4+4+FILENAME_MAX+4, &data, size);
   
   Rio_readinitb(&rio, clientfd);
@@ -53,6 +56,9 @@ int main(int argc, char** argv)
   if (status == 0){printf("Operation Status: success\n");}
   else if(status == -1){printf("Error storing file\n");}
 
+
+  free(buf);
+  free(response);
   Close(clientfd);
   exit(0);
 }
