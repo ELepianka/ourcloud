@@ -52,11 +52,8 @@ int main(int argc, char** argv)
   memcpy(&status,response, 4);
   status = htonl(status);
 
-  printf("status: %d\n", status);
-  if(status == -1)
-  {
-    printf("Error storing file\n");
-  }
+  if (status == 0){printf("Operation Status: success\n");}
+  else if(status == -1){printf("Error storing file\n");}
 
   Close(clientfd);
   exit(0);
