@@ -89,12 +89,12 @@ int main(int argc, char **argv) {
                 printf("just before the fread\n");
                 size = (int)(fread(data, sizeof(char), CONTENT_MAX, stdin));
                 printf("just after the fread\n");
-                char *buf = malloc(8+CONTENT_MAX);
+/*                char *buf = malloc(8+CONTENT_MAX);
                 memset(buf, 0, 8+CONTENT_MAX);
                 memcpy(buf, resp, 4);
                 memcpy(buf+4, size, 4);
                 memcpy(buf+4+4, &data, size);
-                Rio_writen(connfd,buf,8+CONTENT_MAX);
+*/                Rio_writen(connfd,buf,8+CONTENT_MAX);
                 break;
             case 1:
                 printf("Request Type = put\n");
@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
                 printf("Request Type = del\n");
                 memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
                 printf("Filename = %s\n",filename);
-                remove("test.txt");
+                remove(filename);
                 break;
             case 3:
                 printf("Request Type = list\n");
