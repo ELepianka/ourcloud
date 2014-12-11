@@ -24,6 +24,6 @@ mclist: include/csapp.o client/mclist.o
 	${CC} $^ -lpthread -Icommon -o $@
 
 clean:
-	rm -f client/mcput.o client/mcget.o client/mcdel.o client/mclist.o i
+	rm -f client/mcput.o client/mcget.o client/mcdel.o client/mclist.o 
 	rm -f server/server.o include/csapp.o
 	rm -f ourserver mcput mcget mcdel mclist

@@ -1,4 +1,4 @@
-//mcput sends a request to put a file onto the cloud server
+//mcdel sends a request to delete  a file on the cloud server
 
 #include <stdio.h>
 #include "../include/csapp.h"
@@ -8,11 +8,11 @@ int main(int argc, char** argv)
 {
   printf("Input file is read from stdin\n");
   int port, clientfd;
-  char data[CONTENT_MAX];
+  //char data[CONTENT_MAX];
   int type = DEL;
   char host[HOST_LENGTH];
   unsigned int secret_key;
-  char filename[FILENAME_MAX];
+  char filename[FNAME_MAX];
   char *buf = malloc(PUT_REQ_HEADER+CONTENT_MAX);
   memset(buf, 0, PUT_REQ_HEADER+CONTENT_MAX);
 
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
   memcpy(buf, &secret_key, 4);
   memcpy(buf+4, &type, 4);
-  memcpy(buf+4+4, &filename, FILENAME_MAX);
+  memcpy(buf+4+4, &filename, FNAME_MAX);
   
   Rio_readinitb(&rio, clientfd);
   Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);
@@ -55,6 +55,8 @@ int main(int argc, char** argv)
     printf("Error storing file\n");
   }
 
+  free(buf);
+  free(response);
   Close(clientfd);
   exit(0);
 }
