@@ -92,13 +92,13 @@ int main(int argc, char **argv) {
                 size = (int)(fread(data, sizeof(char), CONTENT_MAX, file));
                 fclose(file);
                 printf("just after the fread\n");
-                char *buf = malloc(8+CONTENT_MAX);
-/*                memset(buf, 0, 8+CONTENT_MAX);
-                memcpy(buf, &resp, 4);
-                memcpy(buf+4, &size, 4);
-                memcpy(buf+4+4, &data, size);
-                Rio_writen(connfd,buf,8+CONTENT_MAX);
-*/                Rio_writen(connfd,&resp,4);
+                char *content = malloc(8+CONTENT_MAX);
+                memset(content, 0, 8+CONTENT_MAX);
+                memcpy(content, &resp, 4);
+                memcpy(content+4, &size, 4);
+                memcpy(content+4+4, &data, size);
+                Rio_writen(connfd,content,8+CONTENT_MAX);
+                Rio_writen(connfd,&resp,4);
                 break;
             case 1:
                 printf("Request Type = put\n");
