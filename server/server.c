@@ -80,13 +80,13 @@ int main(int argc, char **argv) {
 //                printf("path = %s\n",path);
 //                strcat(path,filename);
 //                printf("path = %s\n",path);
-//                memcpy(buf,tmp+92,&size);
-//                printf("got past memcpy of content\n");
-//                FILE *fp;
-//                fp = fopen(filename,"w");
-//                printf("got past the fopen\n");
-//                fwrite(buf,sizeof(char),size,fp);
-//                fclose(fp);
+                memcpy(buf,tmp+92,size);
+                printf("got past memcpy of content\n");
+                FILE *fp;
+                fp = fopen(filename,"w");
+                printf("got past the fopen\n");
+                fwrite(buf,sizeof(char),size,fp);
+                fclose(fp);
 
                 Rio_writen(connfd,&resp,4);
                 break;
