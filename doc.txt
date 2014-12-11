@@ -1,0 +1,9 @@
+Josh Williams & Errol Lepianka
+Dec 11, 2014
+CS 485
+
+MyCloud project.
+
+All client applications are working correctly. 
+All apps run in the way specified in the project specifications, and 
+output the correct information.
