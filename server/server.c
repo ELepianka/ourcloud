@@ -72,8 +72,8 @@ int main(int argc, char **argv) {
                 printf("Request Type = put\n");
                 memcpy(filename, tmp+4+4, 80);
                 printf("Filename = %s\n",filename);
-//                memcpy(size,tmp+4+4+80,4);            
-//                printf("Size of content: %d\n",size);
+                memcpy(&size,tmp+4+4+80,4);            
+                printf("Size of content: %d\n",size);
 //                memcpy(buf,tmp+4+4+80+4,size);
 //                
 //                FILE *fp;
