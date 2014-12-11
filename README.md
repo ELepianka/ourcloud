@@ -1,19 +1,20 @@
  README
- ========
+ =====
  MyCloud by Josh Williams & Errol Lepianka
- ----------------------------
- ````
+ `````
  files:
--csapp.c
--csapp.h
-+includes/csapp.c
-+includes/csapp.h
-+includes/options.h
- server.c
- client.c
+ includes/csapp.c
+ includes/csapp.h
+ includes/options.h
+ includes/hostinfo.c
+ server/server.c
+ client/mcget.c
+ client/mcput.c
+ client/mcdel.c
+ client/mclist.c
  Makefile
- README
- transcript.txt
+ README.md
+
  `````
  
  END
