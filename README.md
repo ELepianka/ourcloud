@@ -1,4 +1,4 @@
- # H1 README
+ README
  =====
  MyCloud by Josh Williams & Errol Lepianka
  `````
