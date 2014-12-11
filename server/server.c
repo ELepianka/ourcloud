@@ -69,9 +69,11 @@ int main(int argc, char **argv) {
                 printf("Request Type = get\n");
                 memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
                 printf("Filename = %s\n",filename);
+                strcpy(path,"server//");
+                strcat(path,filename);
                 char data[CONTENT_MAX];
                 FILE *file;
-                file = fopen(filename,"r");
+                file = fopen(path,"r");
                 fseek(file,0,SEEK_END);
                 size = ftell(file);
                 fseek(file,0,SEEK_SET);
@@ -92,9 +94,7 @@ int main(int argc, char **argv) {
                 memcpy(&size,tmp+88,4);
                 size = ntohl(size);
                 strcpy(path,"server//");
-                printf("path = %s\n",path);
                 strcat(path,filename);
-                printf("path = %s\n",path);
                 memcpy(buf,tmp+92,size);
                 FILE *fp;
                 fp = fopen(path,"w");
@@ -108,9 +108,7 @@ int main(int argc, char **argv) {
                 memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
                 printf("Filename = %s\n",filename);
                 strcpy(path,"server//");
-                printf("path = %s\n",path);
                 strcat(path,filename);
-                printf("path = %s\n",path);
                 remove(path);
                 break;
             case 3:
