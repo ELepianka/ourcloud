@@ -23,6 +23,9 @@ int main(int argc, char** argv)
     return 0;
   }
   
+  char* response = malloc(PUT_RESP_HEADER);
+  memset(response, 0, PUT_RESP_HEADER);
+  
   strcpy(host, argv[1]);
   port = atoi(argv[2]);
   secret_key = atoi(argv[3]);
@@ -33,21 +36,23 @@ int main(int argc, char** argv)
 
   port = htonl(port);
   secret_key = htonl(secret_key);
+  type = htonl(type);
 
   memcpy(buf, &secret_key, 4);
   memcpy(buf+4, &type, 4);
-  memcpy(buf+4+4, filename, FILENAME_MAX); 
+  memcpy(buf+4+4, &filename, FILENAME_MAX);
   memcpy(buf+4+4+FILENAME_MAX, &size, 4);
   memcpy(buf+4+4+FILENAME_MAX+4, &data, size);
   
   Rio_readinitb(&rio, clientfd);
   Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);
-//  Rio_readnb(&rio, data, PUT_RESP_HEADER);
+  Rio_readnb(&rio, response, PUT_RESP_HEADER);
 
-  int status = -1; //-1 is an error, 0 is success
- // memcpy(data, status, 4);
-  status = ntohl(status);
+  int status; //-1 is an error, 0 is success
+  memcpy(&status,response, 4);
+  status = htonl(status);
 
+  printf("status: %d\n", status);
   if(status == -1)
   {
     printf("Error storing file\n");

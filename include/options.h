@@ -18,9 +18,9 @@
 #define DEL_RESP_HEADER 4
 #define LIST_RESP_HEADER 8
 
+#define GET 0
 #define PUT 1
-#define GET 2
-#define DEL 3
-#define LIST 4
+#define DEL 2
+#define LIST 3
 
 #endif
