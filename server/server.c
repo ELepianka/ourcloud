@@ -35,19 +35,29 @@ int main(int argc, char **argv) {
         size_t size;
     	size = sizeof(char)*(CONTENT_MAX);
     	rio_t rio;
-        printf("we're at the readinitb\n");
     	Rio_readinitb(&rio, connfd);
-        char* tmp;
+        char* tmp = malloc(PUT_REQ_HEADER+CONTENT_MAX);
         int user_key = 0;
         int tmpint = 0;       
- 
-        printf("did not read anything!\n");
-        Rio_readnb(&rio, tmp, 4);
-        user_key = atoi(tmp);
-        printf("read something!\n%d\n",user_key);
+        rio_readnb(&rio, tmp, PUT_REQ_HEADER+CONTENT_MAX);
+	memcpy(&user_key, tmp, 4);
+        user_key = ntohl(user_key);
+        printf("read something!\n%s\n",tmp);
         if (user_key != secret_key){
             return -1;
         }
+	int request_type = -1;
+	memcpy(&request_type, tmp+4, 4);
+	request_type = ntohl(request_type);
+	if(request_type == -1)
+	{
+	  printf("Poorly formatted request\n");
+	}
+	if(request_type == 1)
+	{
+	  printf("type: PUT\n");
+	}
+
 //        Rio_readnb(&rio, tmp, 4);
 //        tmpint = atoi(tmp);
 //        if (tmpint != 1){

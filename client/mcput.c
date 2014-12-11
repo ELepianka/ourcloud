@@ -28,7 +28,7 @@ int main(int argc, char** argv)
   secret_key = atoi(argv[3]);
   strcpy(filename, argv[4]);
   
-  //rio_t rio; 
+  rio_t rio; 
   clientfd = Open_clientfd(host, port); 
 
   port = htonl(port);
@@ -40,12 +40,12 @@ int main(int argc, char** argv)
   memcpy(buf+4+4+FILENAME_MAX, &size, 4);
   memcpy(buf+4+4+FILENAME_MAX+4, &data, size);
   
-  //Rio_readinitb(&rio, clientfd);
+  Rio_readinitb(&rio, clientfd);
   Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);
-  Rio_readnb(clientfd, data, PUT_RESP_HEADER);
+//  Rio_readnb(&rio, data, PUT_RESP_HEADER);
 
   int status = -1; //-1 is an error, 0 is success
-  memcpy(data, status, 4);
+ // memcpy(data, status, 4);
   status = ntohl(status);
 
   if(status == -1)

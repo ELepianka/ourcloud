@@ -1,5 +1,5 @@
 CC=gcc -Wall -std=gnu99
-CFLAGS=-I.
+CFLAGS=-g -I.
 OBJECTS = server.o mcput.o mcget.o mcdel.o mclist.o csapp.o
 HEADERS = csapp.h options.h
 
