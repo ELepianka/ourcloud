@@ -44,16 +44,24 @@ int main(int argc, char** argv)
   int status; //-1 is an error, 0 is success
   memcpy(&status,response, 4);
   status = htonl(status);
+  
+  if (status == 0){printf("Operation Status: success\n");}
+  else if(status == -1){printf("Error storing file\n");}
 
-  printf("status: %d\n", status);
-  if(status == -1)
-  {
-    printf("Error storing file\n");
+  struct files *root;
+  root = malloc(sizeof(struct files));  
+  root->next = 0;              
+  struct files *conductor;  
+  conductor = root;
+  while (conductor != NULL){
+    printf("%s\n", conductor->filename);
+    conductor = conductor->next;
   }
+
   int size;
   memcpy(&size, response+4, 4);
   size = ntohl(size);
-  printf("sizeofresponse = %d\n", size);
+//  printf("sizeofresponse = %d\n", size);
   memcpy(&data, response+4+4, size);
   fwrite(data, sizeof(char), size, stdout);
 

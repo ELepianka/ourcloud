@@ -16,12 +16,12 @@ void connection(socklen_t clientlen, struct sockaddr_in clientaddr){
     haddrp = inet_ntoa(clientaddr.sin_addr);
     printf("server connected to %s (%s)\n", hp->h_name, haddrp);
 }
-
+/*
 struct files{
     char filename[FNAME_MAX];
     struct files *next;
 };
-
+*/
 int main(int argc, char **argv) {
 
     int listenfd, connfd, port; 
@@ -83,6 +83,18 @@ int main(int argc, char **argv) {
         switch(request_type){
             case 0:
                 printf("Request Type = get\n");
+                memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
+                printf("Filename = %s\n",filename);
+                char data[CONTENT_MAX];
+                printf("just before the fread\n");
+                size = (int)(fread(data, sizeof(char), CONTENT_MAX, stdin));
+                printf("just after the fread\n");
+                char *buf = malloc(8+CONTENT_MAX);
+                memset(buf, 0, 8+CONTENT_MAX);
+                memcpy(buf, resp, 4);
+                memcpy(buf+4, size, 4);
+                memcpy(buf+4+4, &data, size);
+                Rio_writen(connfd,buf,8+CONTENT_MAX);
                 break;
             case 1:
                 printf("Request Type = put\n");
@@ -93,16 +105,14 @@ int main(int argc, char **argv) {
  
                 memcpy(&size,tmp+88,4);
                 size = ntohl(size);
-                printf("Size of content: %d\n",size);
+//                printf("Size of content: %d\n",size);
 //                strcpy(path,"../server/");
 //                printf("path = %s\n",path);
 //                strcat(path,filename);
 //                printf("path = %s\n",path);
                 memcpy(buf,tmp+92,size);
-                printf("got past memcpy of content\n");
                 FILE *fp;
                 fp = fopen(filename,"w");
-                printf("got past the fopen\n");
                 fwrite(buf,sizeof(char),size,fp);
                 fclose(fp);
 
@@ -117,11 +127,11 @@ int main(int argc, char **argv) {
             case 3:
                 printf("Request Type = list\n");
                 conductor = root;
-                while (conductor != NULL){
+/*                while (conductor != NULL){
                     printf("%s\n", conductor->filename);
                     conductor = conductor->next;
                 }
-                break;
+*/                break;
         };
 	
 

@@ -7,7 +7,7 @@ int main(int argc, char** argv)
   int port, clientfd;
   char data[CONTENT_MAX];
   int size = (int)(fread(data, sizeof(char), CONTENT_MAX, stdin));
-  printf("size: %d\n", size);
+//  printf("size: %d\n", size);
   int type = PUT;
   char host[HOST_LENGTH];
   unsigned int secret_key;

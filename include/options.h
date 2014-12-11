@@ -23,4 +23,9 @@
 #define DEL 2
 #define LIST 3
 
+struct files{
+    char filename[FNAME_MAX];
+    struct files *next;
+};
+
 #endif
