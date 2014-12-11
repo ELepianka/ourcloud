@@ -17,7 +17,10 @@ void connection(socklen_t clientlen, struct sockaddr_in clientaddr){
     printf("server connected to %s (%s)\n", hp->h_name, haddrp);
 }
 
-
+struct files{
+    char filename[FNAME_MAX];
+    struct files *next;
+};
 
 int main(int argc, char **argv) {
 
@@ -37,6 +40,18 @@ int main(int argc, char **argv) {
     	clientlen = sizeof(clientaddr);
     	connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen);
         connection(clientlen,clientaddr);
+
+        struct files *root;
+        struct files *conductor;  
+        root = malloc(sizeof(struct files));  
+        root->next = 0;
+        
+        strcpy(root->filename,"herpaderp");
+//        conductor = root;
+//        while (conductor != NULL){
+//            printf("%s\n", conductor->filename);
+//            conductor = conductor->next;
+//        }
 
     	rio_t rio;
     	Rio_readinitb(&rio, connfd);
@@ -73,6 +88,9 @@ int main(int argc, char **argv) {
                 printf("Request Type = put\n");
                 memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
                 printf("Filename = %s\n",filename);
+        
+                strcpy(root->filename,filename);
+ 
                 memcpy(&size,tmp+88,4);
                 size = ntohl(size);
                 printf("Size of content: %d\n",size);
@@ -98,6 +116,11 @@ int main(int argc, char **argv) {
                 break;
             case 3:
                 printf("Request Type = list\n");
+                conductor = root;
+                while (conductor != NULL){
+                    printf("%s\n", conductor->filename);
+                    conductor = conductor->next;
+                }
                 break;
         };
 	
