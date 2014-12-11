@@ -86,12 +86,13 @@ int main(int argc, char **argv) {
                 memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
                 printf("Filename = %s\n",filename);
                 char data[CONTENT_MAX];
-                printf("just before the fread\n");
                 FILE *file;
-                file = fopen(filename,"w");
-                size = (int)(fread(data, sizeof(char), CONTENT_MAX, file));
+                file = fopen(filename,"r");
+//                size = (int)(fread(data, sizeof(char), CONTENT_MAX, file));
+                fseek(file,0,SEEK_END);
+                size = ftell(file);
+                fseek(file,0,SEEK_SET);
                 fclose(file);
-                printf("just after the fread\n");
                 char *content = malloc(8+CONTENT_MAX);
                 memset(content, 0, 8+CONTENT_MAX);
                 memcpy(content, &resp, 4);

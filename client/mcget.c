@@ -43,7 +43,7 @@ int main(int argc, char** argv)
   Rio_readinitb(&rio, clientfd);
   Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);//sending way too much intentionally
   Rio_readnb(&rio, response, 8+CONTENT_MAX);
-*
+
   int status; //-1 is an error, 0 is success
   memcpy(&status,response, 4);
   status = htonl(status);
@@ -51,13 +51,18 @@ int main(int argc, char** argv)
   if (status == 0){printf("Operation Status: success\n");}
   else if(status == -1){printf("Error storing file\n");}
 
+  printf("grabbing size and resp\n");
   int size;
   memcpy(&size, response+4, 4);
-  size = ntohl(size);
-  char* data = malloc(CONTENT_MAX);
-  memcpy(data, response+4+4, size);
-//  fwrite(data, sizeof(char), size, stdout);
-  
+//  size = ntohl(size);
+//  char* data = malloc(CONTENT_MAX);
+//  memcpy(data, response+4+4, size);
+  printf("client size: %d\n",size);
+ 
+  FILE *out = fopen(filename,"w");
+  fwrite(response+8,sizeof(char),size,out);
+
+ 
   free(buf);
   free(response);
 
