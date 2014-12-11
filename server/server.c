@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include<unistd.h>
 
 void connection(socklen_t clientlen, struct sockaddr_in clientaddr){
     struct hostent *hp;
@@ -40,7 +41,6 @@ int main(int argc, char **argv) {
     	rio_t rio;
     	Rio_readinitb(&rio, connfd);
         char* tmp = malloc(PUT_REQ_HEADER+CONTENT_MAX);
-//        memset(tmp,0,PUT_REQ_HEADER+CONTENT_MAX);
         int user_key = 0;
         rio_readnb(&rio, tmp, PUT_REQ_HEADER+CONTENT_MAX);
     	memcpy(&user_key, tmp, 4);//user_key = bytes 0-3
@@ -92,6 +92,9 @@ int main(int argc, char **argv) {
                 break;
             case 2:
                 printf("Request Type = del\n");
+                memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
+                printf("Filename = %s\n",filename);
+                remove("test.txt");
                 break;
             case 3:
                 printf("Request Type = list\n");

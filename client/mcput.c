@@ -4,7 +4,6 @@
 
 int main(int argc, char** argv)
 {
-  printf("Input file is read from stdin\n");
   int port, clientfd;
   char data[CONTENT_MAX];
   int size = (int)(fread(data, sizeof(char), CONTENT_MAX, stdin));
