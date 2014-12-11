@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
-#include<unistd.h>
+#include <unistd.h>
 
 void connection(socklen_t clientlen, struct sockaddr_in clientaddr){
     struct hostent *hp;
@@ -16,12 +16,12 @@ void connection(socklen_t clientlen, struct sockaddr_in clientaddr){
     haddrp = inet_ntoa(clientaddr.sin_addr);
     printf("server connected to %s (%s)\n", hp->h_name, haddrp);
 }
-/*
-struct files{
-    char filename[FNAME_MAX];
-    struct files *next;
-};
-*/
+
+//struct files{
+//    char filename[FNAME_MAX];
+//    struct files *next;
+//};
+
 int main(int argc, char **argv) {
 
     int listenfd, connfd, port; 
@@ -41,12 +41,12 @@ int main(int argc, char **argv) {
     	connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen);
         connection(clientlen,clientaddr);
 
-        struct files *root;
-        struct files *conductor;  
-        root = malloc(sizeof(struct files));  
-        root->next = 0;
+//        struct files *root;
+//        struct files *conductor;  
+//        root = malloc(sizeof(struct files));  
+//        root->next = 0;
         
-        strcpy(root->filename,"herpaderp");
+//        strcpy(root->filename,"herpaderp");
 //        conductor = root;
 //        while (conductor != NULL){
 //            printf("%s\n", conductor->filename);
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
 
         int resp = 0;
         char filename[FNAME_MAX];
-//        char path[10+FNAME_MAX];
+        char path[10+FNAME_MAX];  //used for opening files in different directories
         char* buf = malloc(CONTENT_MAX);
         int size = 0;
         switch(request_type){
@@ -106,18 +106,17 @@ int main(int argc, char **argv) {
                 memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
                 printf("Filename = %s\n",filename);
         
-                strcpy(root->filename,filename);
+//                strcpy(root->filename,filename);
  
                 memcpy(&size,tmp+88,4);
                 size = ntohl(size);
-//                printf("Size of content: %d\n",size);
-//                strcpy(path,"../server/");
-//                printf("path = %s\n",path);
-//                strcat(path,filename);
-//                printf("path = %s\n",path);
+                strcpy(path,"server//");
+                printf("path = %s\n",path);
+                strcat(path,filename);
+                printf("path = %s\n",path);
                 memcpy(buf,tmp+92,size);
                 FILE *fp;
-                fp = fopen(filename,"w");
+                fp = fopen(path,"w");
                 fwrite(buf,sizeof(char),size,fp);
                 fclose(fp);
 
@@ -127,11 +126,17 @@ int main(int argc, char **argv) {
                 printf("Request Type = del\n");
                 memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
                 printf("Filename = %s\n",filename);
-                remove(filename);
+                strcpy(path,"server//");
+                printf("path = %s\n",path);
+                strcat(path,filename);
+                printf("path = %s\n",path);
+                remove(path);
                 break;
             case 3:
                 printf("Request Type = list\n");
-                conductor = root;
+                system("ls");
+                
+//                conductor = root;
 /*                while (conductor != NULL){
                     printf("%s\n", conductor->filename);
                     conductor = conductor->next;
