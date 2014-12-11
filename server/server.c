@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
                 memcpy(content+4, &size, 4);
                 memcpy(content+4+4, &data, size);
                 Rio_writen(connfd,content,8+CONTENT_MAX);
-                Rio_writen(connfd,&resp,4);
+//                Rio_writen(connfd,&resp,4);
                 break;
             case 1:
                 printf("Request Type = put\n");

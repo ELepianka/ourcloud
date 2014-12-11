@@ -37,13 +37,13 @@ int main(int argc, char** argv)
   memcpy(buf+4, &type, 4);
   memcpy(buf+4+4, &filename, FNAME_MAX); 
   
-  char* response = malloc(GET_RESP_HEADER);
-  memset(response, 0, GET_RESP_HEADER);
+  char* response = malloc(8+CONTENT_MAX);
+  memset(response, 0, 8+CONTENT_MAX);
   
   Rio_readinitb(&rio, clientfd);
   Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);//sending way too much intentionally
-  Rio_readnb(&rio, response, GET_RESP_HEADER+CONTENT_MAX);
-
+  Rio_readnb(&rio, response, 8+CONTENT_MAX);
+*
   int status; //-1 is an error, 0 is success
   memcpy(&status,response, 4);
   status = htonl(status);
@@ -54,9 +54,9 @@ int main(int argc, char** argv)
   int size;
   memcpy(&size, response+4, 4);
   size = ntohl(size);
-  char* data = malloc(size);
+  char* data = malloc(CONTENT_MAX);
   memcpy(data, response+4+4, size);
-  fwrite(data, sizeof(char), size, stdout);
+//  fwrite(data, sizeof(char), size, stdout);
   
   free(buf);
   free(response);
