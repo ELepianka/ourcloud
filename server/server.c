@@ -60,8 +60,10 @@ int main(int argc, char **argv) {
         rio_readnb(&rio, tmp, PUT_REQ_HEADER+CONTENT_MAX);
     	memcpy(&user_key, tmp, 4);//user_key = bytes 0-3
         user_key = ntohl(user_key);
+	int resp = 0;
         if (user_key != secret_key){
 	        printf("incorrect key\n");
+		resp = -1;
             return -1;
         }
         else {
@@ -75,7 +77,6 @@ int main(int argc, char **argv) {
 	        printf("Poorly formatted request\n");
     	}
 
-        int resp = 0;
         char filename[FNAME_MAX];
         char path[10+FNAME_MAX];  //used for opening files in different directories
         char* buf = malloc(CONTENT_MAX);
@@ -134,8 +135,37 @@ int main(int argc, char **argv) {
                 break;
             case 3:
                 printf("Request Type = list\n");
+<<<<<<< HEAD
+		system("ls server/ > listfile.txt");
+		char* listresponse = malloc(CONTENT_MAX);
+		memset(listresponse, 0, CONTENT_MAX);
+		FILE* listfile = fopen("listfile.txt", "r");
+                
+		fseek(listfile,0,SEEK_END);
+                size = ftell(listfile);
+                fseek(listfile,0,SEEK_SET);
+		printf("sizeoflistfile: %d\n", size);
+		//size = htonl(size);
+		fread(listresponse+4+4, sizeof(char), size, listfile);
+
+                memcpy(listresponse, &resp, 4);
+                memcpy(listresponse+4, &size, 4);
+                //memcpy(listresponse+4+4, &listfile, size);
+                
+		fclose(listfile);
+
+
+
+
+
+
+
+
+
+=======
                 system("ls");
                 
+>>>>>>> 496528958a7ec4fad57e89dcf4ea665b6645168a
 //                conductor = root;
 /*                while (conductor != NULL){
                     printf("%s\n", conductor->filename);
