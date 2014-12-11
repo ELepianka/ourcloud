@@ -17,11 +17,6 @@ void connection(socklen_t clientlen, struct sockaddr_in clientaddr){
     printf("server connected to %s (%s)\n", hp->h_name, haddrp);
 }
 
-//struct files{
-//    char filename[FNAME_MAX];
-//    struct files *next;
-//};
-
 int main(int argc, char **argv) {
 
     int listenfd, connfd, port; 
@@ -40,18 +35,6 @@ int main(int argc, char **argv) {
     	clientlen = sizeof(clientaddr);
     	connfd = Accept(listenfd, (SA *)&clientaddr, &clientlen);
         connection(clientlen,clientaddr);
-
-//        struct files *root;
-//        struct files *conductor;  
-//        root = malloc(sizeof(struct files));  
-//        root->next = 0;
-        
-//        strcpy(root->filename,"herpaderp");
-//        conductor = root;
-//        while (conductor != NULL){
-//            printf("%s\n", conductor->filename);
-//            conductor = conductor->next;
-//        }
 
     	rio_t rio;
     	Rio_readinitb(&rio, connfd);
@@ -89,7 +72,6 @@ int main(int argc, char **argv) {
                 char data[CONTENT_MAX];
                 FILE *file;
                 file = fopen(filename,"r");
-//                size = (int)(fread(data, sizeof(char), CONTENT_MAX, file));
                 fseek(file,0,SEEK_END);
                 size = ftell(file);
                 fseek(file,0,SEEK_SET);
@@ -100,14 +82,12 @@ int main(int argc, char **argv) {
                 memcpy(content+4, &size, 4);
                 memcpy(content+4+4, &data, size);
                 Rio_writen(connfd,content,8+CONTENT_MAX);
-//                Rio_writen(connfd,&resp,4);
                 break;
             case 1:
                 printf("Request Type = put\n");
                 memcpy(filename, tmp+4+4, 80); //filename = bytes 8-87
                 printf("Filename = %s\n",filename);
         
-//                strcpy(root->filename,filename);
  
                 memcpy(&size,tmp+88,4);
                 size = ntohl(size);
@@ -135,43 +115,22 @@ int main(int argc, char **argv) {
                 break;
             case 3:
                 printf("Request Type = list\n");
-<<<<<<< HEAD
 		system("ls server/ > listfile.txt");
-		char* listresponse = malloc(CONTENT_MAX);
-		memset(listresponse, 0, CONTENT_MAX);
+		char* listresponse = malloc(PUT_REQ_HEADER+CONTENT_MAX);
+		memset(listresponse, 0, PUT_REQ_HEADER+CONTENT_MAX);
 		FILE* listfile = fopen("listfile.txt", "r");
                 
 		fseek(listfile,0,SEEK_END);
                 size = ftell(listfile);
                 fseek(listfile,0,SEEK_SET);
-		printf("sizeoflistfile: %d\n", size);
-		//size = htonl(size);
-		fread(listresponse+4+4, sizeof(char), size, listfile);
-
+		size = htonl(size);
                 memcpy(listresponse, &resp, 4);
                 memcpy(listresponse+4, &size, 4);
-                //memcpy(listresponse+4+4, &listfile, size);
-                
+		size = ntohl(size);
+		fread(listresponse+4+4, sizeof(char), size, listfile);
+		Rio_writen(connfd, listresponse, PUT_REQ_HEADER+CONTENT_MAX);
 		fclose(listfile);
-
-
-
-
-
-
-
-
-
-=======
-                system("ls");
-                
->>>>>>> 496528958a7ec4fad57e89dcf4ea665b6645168a
-//                conductor = root;
-/*                while (conductor != NULL){
-                    printf("%s\n", conductor->filename);
-                    conductor = conductor->next;
-                }
-*/                break;
+                break;
         };
 	
 

@@ -7,7 +7,7 @@
 int main(int argc, char** argv)
 {
   int port, clientfd;
-  char data[CONTENT_MAX];
+  char* data = malloc(CONTENT_MAX);
   int type = LIST;
   char host[HOST_LENGTH];
   unsigned int secret_key;
@@ -20,8 +20,8 @@ int main(int argc, char** argv)
     return 0;
   }
   
-  char* response = malloc(DEL_RESP_HEADER);
-  memset(response, 0, DEL_RESP_HEADER);
+  char* response = malloc(PUT_REQ_HEADER+CONTENT_MAX);
+  memset(response, 0, PUT_REQ_HEADER+CONTENT_MAX);
   
   strcpy(host, argv[1]);
   port = atoi(argv[2]);
@@ -39,7 +39,7 @@ int main(int argc, char** argv)
   
   Rio_readinitb(&rio, clientfd);
   Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);
-  Rio_readnb(&rio, response, LIST_RESP_HEADER);
+  Rio_readnb(&rio, response, PUT_REQ_HEADER+CONTENT_MAX);
 
   int status; //-1 is an error, 0 is success
   memcpy(&status,response, 4);
@@ -48,21 +48,11 @@ int main(int argc, char** argv)
   if (status == 0){printf("Operation Status: success\n");}
   else if(status == -1){printf("Error storing file\n");}
 
-  struct files *root;
-  root = malloc(sizeof(struct files));  
-  root->next = 0;              
-  struct files *conductor;  
-  conductor = root;
-  while (conductor != NULL){
-    printf("%s\n", conductor->filename);
-    conductor = conductor->next;
-  }
-
   int size;
   memcpy(&size, response+4, 4);
   size = ntohl(size);
-//  printf("sizeofresponse = %d\n", size);
-  memcpy(&data, response+4+4, size);
+
+  memcpy(data, response+4+4, size);
   fwrite(data, sizeof(char), size, stdout);
 
   free(buf);
