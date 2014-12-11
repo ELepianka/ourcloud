@@ -12,7 +12,7 @@ int main(int argc, char** argv)
   int type = PUT;
   char host[HOST_LENGTH];
   unsigned int secret_key;
-  char filename[FILENAME_MAX];
+  char filename[FNAME_MAX]; 
   char *buf = malloc(PUT_REQ_HEADER+CONTENT_MAX);
   memset(buf, 0, PUT_REQ_HEADER+CONTENT_MAX);
 
@@ -40,10 +40,10 @@ int main(int argc, char** argv)
 
   memcpy(buf, &secret_key, 4);
   memcpy(buf+4, &type, 4);
-  memcpy(buf+4+4, &filename, FILENAME_MAX);
-  memcpy(buf+88, &size, 4);
+  memcpy(buf+4+4, &filename, FNAME_MAX);
+  memcpy(buf+4+4+FNAME_MAX, &size, 4);
   size = ntohl(size);
-  memcpy(buf+4+4+FILENAME_MAX+4, &data, size);
+  memcpy(buf+4+4+FNAME_MAX+4, &data, size);
   
   Rio_readinitb(&rio, clientfd);
   Rio_writen(clientfd, buf, PUT_REQ_HEADER+CONTENT_MAX);
