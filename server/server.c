@@ -44,25 +44,33 @@ int main(int argc, char **argv) {
         user_key = ntohl(user_key);
         printf("read something!\n%s\n",tmp);
         if (user_key != secret_key){
+	  printf("incorrect key\n");
             return -1;
         }
 	int request_type = -1;
 	memcpy(&request_type, tmp+4, 4);
-	request_type = ntohl(request_type);
+	printf("request_type = %d\n", request_type);
 	if(request_type == -1)
 	{
 	  printf("Poorly formatted request\n");
+	}
+	if(request_type == 0)
+	{
+	  printf("type: GET\n");
 	}
 	if(request_type == 1)
 	{
 	  printf("type: PUT\n");
 	}
-
-//        Rio_readnb(&rio, tmp, 4);
-//        tmpint = atoi(tmp);
-//        if (tmpint != 1){
-//           return -1;
-//        }       
+	if(request_type == 2)
+	{
+	  printf("type: DEL\n");
+	}
+	if(request_type == 3)
+	{
+	  printf("type: LIST\n");
+	}
+	
 
         exit(0);
     }
