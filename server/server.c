@@ -87,14 +87,18 @@ int main(int argc, char **argv) {
                 printf("Filename = %s\n",filename);
                 char data[CONTENT_MAX];
                 printf("just before the fread\n");
-                size = (int)(fread(data, sizeof(char), CONTENT_MAX, stdin));
+                FILE *file;
+                file = fopen(filename,"w");
+                size = (int)(fread(data, sizeof(char), CONTENT_MAX, file));
+                fclose(file);
                 printf("just after the fread\n");
-/*                char *buf = malloc(8+CONTENT_MAX);
-                memset(buf, 0, 8+CONTENT_MAX);
-                memcpy(buf, resp, 4);
-                memcpy(buf+4, size, 4);
+                char *buf = malloc(8+CONTENT_MAX);
+/*                memset(buf, 0, 8+CONTENT_MAX);
+                memcpy(buf, &resp, 4);
+                memcpy(buf+4, &size, 4);
                 memcpy(buf+4+4, &data, size);
-*/                Rio_writen(connfd,buf,8+CONTENT_MAX);
+                Rio_writen(connfd,buf,8+CONTENT_MAX);
+*/                Rio_writen(connfd,&resp,4);
                 break;
             case 1:
                 printf("Request Type = put\n");
