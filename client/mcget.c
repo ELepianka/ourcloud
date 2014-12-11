@@ -51,13 +51,11 @@ int main(int argc, char** argv)
   if (status == 0){printf("Operation Status: success\n");}
   else if(status == -1){printf("Error storing file\n");}
 
-  printf("grabbing size and resp\n");
   int size;
   memcpy(&size, response+4, 4);
 //  size = ntohl(size);
 //  char* data = malloc(CONTENT_MAX);
 //  memcpy(data, response+4+4, size);
-  printf("client size: %d\n",size);
  
   FILE *out = fopen(filename,"w");
   fwrite(response+8,sizeof(char),size,out);
